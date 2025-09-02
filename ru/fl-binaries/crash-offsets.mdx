@@ -1,0 +1,28 @@
+---
+sidebar_position: 1
+title: Индексы смещений от сбоев
+---
+
+## Обзор
+
+На этой странице предпринята попытка объединить смещения, найденные в [этой теме](https://the-starport.net/freelancer/forum/viewtopic.php?topic_id=2987), в единую базу данных с возможностью поиска.
+
+Смещения сбоев доступны в виде [полезной нагрузки JSON](/payloads/crash-offsets.json), если вы хотите использовать их для автоматического обнаружения сбоев.
+
+## Finding Your Crash Offset
+
+Чтобы получить смещение от сбоя:
+
+- Нажмите Win + R, введите `eventvwr.msc` и нажмите «ОК».
+- Откройте `Журналы Windows`, затем `Журналы приложений` и найдите причину сбоя.
+- На вкладке 'Общие' обратите внимание на имя модуля, вызвавшего ошибку (например, common.dll), и смещение ошибки (например, 0x000d21eb).
+
+Если вы часто используете просмотрщик событий, вы можете использовать следующий XML-фильтр, чтобы отображать только ошибки, сгенерированные Freelancer.exe и flserver.exe:
+
+```xml
+<QueryList>
+  <Query Id="0" Path="Application">
+    <Select Path="Application">*[System[(Level=2) and (EventID=1000)]] and *[EventData[Data and (Data='Freelancer.exe' or Data='flserver.exe')]]</Select>
+  </Query>
+</QueryList>
+```
